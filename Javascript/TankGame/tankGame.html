@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Canvas Practice</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id='myCanvas' width="640" height="480"></canvas>
+
+    <script>
+        // Canvas variables
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext('2d');
+
+
+        // Tank variables
+        var tankPositionX = 100;
+        var tankPositionY = 100;
+        var tankWidth = 64;
+        var tankHeight = 64;
+        var rightPressed = false;
+        var leftPressed = false;
+        var upPressed = false;
+        var downPressed = false;
+
+
+
+        function drawBackground() {
+            backgroundImg = new Image();
+            backgroundImg.src = 'Tank Graphics/background_tile.png';
+            backgroundImg.onload = function () {
+
+                ctx.drawImage(backgroundImg, 0, 0, 640, 480);
+            }
+        }
+
+        function drawTank() {
+            tankImg = new Image();
+            tankImg.src = 'Tank Graphics/Tank_grey_light.png';
+            tankImg.onload = function () {
+                // added this to clear canvas so tank does not leave trail
+                //ctx.clearRect(0,0,canvas.width,canvas.height);
+                
+                ctx.drawImage(tankImg, tankPositionX, tankPositionY, 64, 64);
+                
+            }
+        }
+        // Event Listener 
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+
+
+        // Event Listener functions
+        function keyDownHandler(e) {
+            if (e.key == 'Right' || e.key == 'ArrowRight') {
+                rightPressed = true;
+            } else if (e.key == 'Left' || e.key == 'ArrowLeft') {
+                leftPressed = true;
+            } else if (e.key == 'Down' || e.key == 'ArrowDown') {
+                downPressed = true;
+            } else if (e.key == 'Up' || e.key == 'ArrowUp') {
+                upPressed = true;
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.key == 'Right' || e.key == 'ArrowRight') {
+                rightPressed = false;
+            } else if (e.key == 'Left' || e.key == 'ArrowLeft') {
+                leftPressed = false;
+            } else if (e.key == 'Down' || e.key == 'ArrowDown') {
+                downPressed = false;
+            } else if (e.key == 'Up' || e.key == 'ArrowUp') {
+                upPressed = false;
+            }
+        }
+        
+        // Rotate tank image
+        function rotateRight(){
+            tankImg = new Image();
+            tankImg.src = 'Tank Graphics/Tank_grey_light.png';
+            tankImg.onload = function () {
+                // added this to clear canvas so tank does not leave trail
+                //ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.drawImage(tankImg, tankPositionX, tankPositionY, 64, 64);
+            }
+
+        }
+
+
+        // window.requestAnimationFrame(drawGame);
+        function drawGame() {
+
+
+            drawBackground();
+            drawTank();
+            if (rightPressed) {
+                rotateRight();
+                /*
+                tankPositionX += 7;
+                if (tankPositionX + tankWidth > canvas.width) {
+                    tankPositionX = canvas.width - tankWidth;
+                }
+                */
+            } else if (leftPressed) {
+                tankPositionX -= 7;
+                if (tankPositionX < 0) {
+                    tankPositionX = 0;
+                }
+            } else if (upPressed) {
+                tankPositionY -= 7;
+                if (tankPositionY < 0) {
+                    tankPositionY = 0;
+                }
+            }else if (downPressed) {
+                tankPositionY += 7;
+                if (tankPositionY + tankHeight > canvas.height) {
+                    tankPositionY = canvas.height - tankHeight;
+                }
+                
+            }
+
+            window.requestAnimationFrame(drawGame);
+
+
+
+
+        }
+
+        window.requestAnimationFrame(drawGame);
+
+       // setInterval(drawGame, 10);
+
+
+
+
+
+    </script>
+</body>
+
+
+
+</html>
